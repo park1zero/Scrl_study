@@ -1,0 +1,15 @@
+{
+  "run_root": "/home/wonyoung/wonyoung/NotHOCBF/results/C1_main_obstacle_near",
+  "dt": 0.2,
+  "case_id": "obs_radial_out_s0p01",
+  "q_first_violation_base": 3,
+  "q_first_violation_ours": 3,
+  "dq_bound_mode": "abs",
+  "dq_first_violation_base": null,
+  "dq_first_violation_ours": null,
+  "outputs": {
+    "q_envelope": "/home/wonyoung/wonyoung/NotHOCBF/results/C1_envelope_weak_pocket/obs_radial_out_s0p01_dt0p20_q_envelope.png",
+    "dq_envelope": "/home/wonyoung/wonyoung/NotHOCBF/results/C1_envelope_weak_pocket/obs_radial_out_s0p01_dt0p20_dq_envelope.png",
+    "margin_panel": "/home/wonyoung/wonyoung/NotHOCBF/results/C1_envelope_weak_pocket/obs_radial_out_s0p01_dt0p20_margin_panel.png"
+  }
+}
