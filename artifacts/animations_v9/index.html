@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SBW Shared Control RL v9 Animations</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .row { display: flex; gap: 24px; flex-wrap: wrap; }
+    .card { width: 360px; }
+    img { max-width: 100%; border: 1px solid #ccc; }
+    h1, h2 { margin-bottom: 0.4rem; }
+    p { line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <h1>SBW Shared Control RL v9</h1>
+  <p>Representative forced scenario: <b>hard</b> difficulty, <b>frozen</b> driver profile, seed <b>262</b>.</p>
+  <div class="row">
+    <div class="card">
+      <h2>Driver only</h2>
+      <img src="hard_frozen_driver.gif" alt="Driver only" />
+      <p>Collision case. The sleepy/frozen driver reacts too late and too weakly.</p>
+    </div>
+    <div class="card">
+      <h2>Heuristic allocator</h2>
+      <img src="hard_frozen_heuristic.gif" alt="Heuristic allocator" />
+      <p>Successful avoidance with moderate takeover.</p>
+    </div>
+    <div class="card">
+      <h2>SAC v9</h2>
+      <img src="hard_frozen_sac.gif" alt="SAC v9" />
+      <p>Successful avoidance, but more aggressive takeover than the heuristic baseline.</p>
+    </div>
+  </div>
+</body>
+</html>

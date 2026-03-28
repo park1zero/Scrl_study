@@ -1,0 +1,7 @@
+numpy>=1.24
+matplotlib>=3.7
+torch>=2.0
+# Optional but recommended for the environment wrapper API.
+gymnasium>=0.29
+# Optional only for the legacy stable-baselines3 path.
+stable-baselines3>=2.3

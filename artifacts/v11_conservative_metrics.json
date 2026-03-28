@@ -1,0 +1,146 @@
+{
+  "metrics": {
+    "collision_mean": 0.5,
+    "collision_std": 0.5,
+    "episode_time_mean": 1.4999999999999996,
+    "episode_time_std": 0.9499999999999997,
+    "final_x_mean": 41.938706997752234,
+    "final_x_std": 3.235417083739737,
+    "final_y_mean": -1.2617413367594967,
+    "final_y_std": 0.7883908760744351,
+    "first_driver_reaction_time_mean": 0.675,
+    "first_driver_reaction_time_std": 0.1250000000000001,
+    "first_motor_release_time_mean": 0.625,
+    "first_motor_release_time_std": 0.12500000000000008,
+    "mean_lambda_mean": 0.5363333333333333,
+    "mean_lambda_std": 0.07033333333333333,
+    "mean_takeover_mean": 0.46366666666666667,
+    "mean_takeover_std": 0.07033333333333333,
+    "min_h_mean": 0.0034067477946027047,
+    "min_h_std": 0.03468596497916687,
+    "min_lambda_mean": 0.24,
+    "min_lambda_std": 0.020000000000000004,
+    "peak_driver_rwa_mean": 0.16333015148354502,
+    "peak_driver_rwa_std": 0.15009216563190814,
+    "peak_driver_swa_cmd_mean": 2.807104649673367,
+    "peak_driver_swa_cmd_std": 2.4848534121045844,
+    "return_mean": -103.50723996637221,
+    "return_std": 99.59695405297091,
+    "rms_conflict_mean": 0.1823976881631013,
+    "rms_conflict_std": 0.019239436458230272,
+    "rms_rwa_mean": 0.12093423360206125,
+    "rms_rwa_std": 0.038081417853112295,
+    "steps_mean": 31.0,
+    "steps_std": 19.0,
+    "success_mean": 0.5,
+    "success_std": 0.5,
+    "replay_size": 572.0,
+    "replay_demo_count": 303.0,
+    "replay_hazard_count": 459.0,
+    "seed_heuristic_success_mean": 0.625,
+    "seed_heuristic_collision_mean": 0.375,
+    "seed_heuristic_min_h_mean": 0.08926916825768208,
+    "seed_driver_success_mean": 0.0,
+    "seed_driver_collision_mean": 1.0,
+    "seed_driver_min_h_mean": -0.22486876598627722
+  },
+  "history": {
+    "step": [
+      49.0,
+      60.0
+    ],
+    "episode_return": [
+      -3.9102859134012817,
+      -203.10419401934314
+    ],
+    "critic_loss": [
+      3178.888671875,
+      3177.1669921875
+    ],
+    "actor_loss": [
+      0.06424001604318619,
+      0.25264474749565125
+    ],
+    "alpha": [
+      0.17999999225139618,
+      0.17996399104595184
+    ],
+    "bc_loss": [
+      0.013939989730715752,
+      0.0183656495064497
+    ],
+    "bc_coef": [
+      0.19874999999999998,
+      0.185
+    ],
+    "anchor_loss": [
+      0.0,
+      0.0
+    ],
+    "anchor_coef": [
+      0.23875,
+      0.22500000000000003
+    ],
+    "hazard_frac": [
+      0.7911275415896488,
+      0.7952898550724637
+    ],
+    "demo_frac": [
+      0.5600739371534196,
+      0.5489130434782609
+    ],
+    "medium_demo_frac": [
+      0.6410256624221802,
+      0.6097561120986938
+    ],
+    "hard_demo_frac": [
+      0.5128205418586731,
+      0.5365853905677795
+    ],
+    "medium_bc_weight": [
+      1.7360000610351562,
+      1.7480000257492065
+    ],
+    "hard_bc_weight": [
+      0.9499999284744263,
+      0.8772726655006409
+    ],
+    "eval_step": [
+      20.0,
+      40.0,
+      60.0,
+      80.0
+    ],
+    "eval_success": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "eval_collision": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "eval_min_h": [
+      0.2440584354464801,
+      0.2440584354464801,
+      0.2518283010293861,
+      0.35669471034665196
+    ],
+    "eval_takeover": [
+      0.4820969275185739,
+      0.4820969275185739,
+      0.4565937676303487,
+      0.45321175753883647
+    ]
+  },
+  "checkpoint": "artifacts/v11_short_last.pt",
+  "replay_counts": {
+    "size": 572,
+    "demo": 303,
+    "hazard": 459,
+    "regular": 113
+  }
+}

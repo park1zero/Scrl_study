@@ -1,0 +1,37 @@
+{
+  "algorithm": "sac_torch_v10_seq_bc",
+  "history_stack": 4,
+  "base_obs_dim": 13,
+  "encoder_type": "gru",
+  "curriculum": true,
+  "driver_population": true,
+  "randomized_training": false,
+  "final_metrics": {
+    "replay_size": 672.0,
+    "replay_demo_count": 483.0,
+    "replay_hazard_count": 538.0,
+    "seed_heuristic_success_mean": 0.75,
+    "seed_heuristic_collision_mean": 0.25,
+    "seed_heuristic_min_h_mean": 0.11402777287358241,
+    "seed_driver_success_mean": 0.0,
+    "seed_driver_collision_mean": 1.0,
+    "seed_driver_min_h_mean": -0.22486876598627722
+  },
+  "replay_counts": {
+    "size": 672,
+    "demo": 483,
+    "hazard": 538,
+    "regular": 134
+  },
+  "sampling": {
+    "demo_sample_frac": 0.22,
+    "hazard_sample_frac": 0.35,
+    "hazard_threshold": 0.55
+  },
+  "bc_shaping": {
+    "medium_bc_boost": 0.75,
+    "hard_bc_scale": 0.55,
+    "medium_severity_min": 0.3,
+    "medium_severity_max": 1.1
+  }
+}

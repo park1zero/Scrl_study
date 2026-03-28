@@ -1,0 +1,12 @@
+{
+  "overall": {
+    "policy": "driver",
+    "history_stack": 1,
+    "episodes": 12,
+    "success_mean": 0.08333333333333333,
+    "collision_mean": 0.8333333333333334,
+    "min_h_mean": 0.02268696261604668,
+    "mean_takeover_mean": 0.0,
+    "return_mean": -10633.109934810638
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "overall": {
+    "policy": "sac",
+    "history_stack": 4,
+    "episodes": 12,
+    "success_mean": 0.75,
+    "collision_mean": 0.25,
+    "min_h_mean": 0.10372167343263905,
+    "mean_takeover_mean": 0.45652793202946945,
+    "return_mean": -50.54490302896415
+  }
+}

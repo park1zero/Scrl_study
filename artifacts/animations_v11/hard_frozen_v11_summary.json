@@ -1,0 +1,23 @@
+{
+  "summary": {
+    "steps": 31.0,
+    "episode_time": 1.5000000000000007,
+    "final_x": 37.23888532978266,
+    "final_y": -1.908475478555074,
+    "min_h": -0.016416236311498578,
+    "mean_lambda": 0.6554838709677419,
+    "min_lambda": 0.28,
+    "mean_takeover": 0.34451612903225803,
+    "rms_conflict": 0.055461845396082524,
+    "rms_rwa": 0.05664139996122697,
+    "first_driver_reaction_time": NaN,
+    "first_motor_release_time": NaN,
+    "peak_driver_rwa": 0.004016857734750749,
+    "peak_driver_swa_cmd": 0.21797186496646748,
+    "collision": 1.0,
+    "success": 0.0,
+    "return": -210.77428642135212
+  },
+  "history_stack": 4,
+  "policy": "sac"
+}

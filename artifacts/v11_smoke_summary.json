@@ -1,0 +1,51 @@
+{
+  "training_checkpoint": "artifacts/v11_conservative_best.pt",
+  "comparison_table": [
+    {
+      "policy_label": "driver",
+      "history_stack": 1,
+      "episodes": 12,
+      "success_mean": 0.08333333333333333,
+      "collision_mean": 0.8333333333333334,
+      "min_h_mean": 0.02268696261604668,
+      "mean_takeover_mean": 0.0,
+      "return_mean": -10633.109934810638
+    },
+    {
+      "policy_label": "heuristic",
+      "history_stack": 1,
+      "episodes": 12,
+      "success_mean": 0.75,
+      "collision_mean": 0.25,
+      "min_h_mean": 0.08316402036361242,
+      "mean_takeover_mean": 0.4954523869501601,
+      "return_mean": -45.6587854172024
+    },
+    {
+      "policy_label": "sequence_pretrain",
+      "history_stack": 4,
+      "episodes": 12,
+      "success_mean": 0.75,
+      "collision_mean": 0.25,
+      "min_h_mean": 0.09573061025580722,
+      "mean_takeover_mean": 0.5082984923050211,
+      "return_mean": -46.96485803395084
+    },
+    {
+      "policy_label": "v11_conservative_sac",
+      "history_stack": 4,
+      "episodes": 12,
+      "success_mean": 0.75,
+      "collision_mean": 0.25,
+      "min_h_mean": 0.10372167343263905,
+      "mean_takeover_mean": 0.45652793202946945,
+      "return_mean": -50.54490302896415
+    }
+  ],
+  "key_result": {
+    "same_success_as_heuristic_on_12cell_grid": true,
+    "v11_takeover_minus_heuristic": -0.03892445492069063,
+    "v11_takeover_minus_pretrain": -0.05177056027555166,
+    "v11_min_h_minus_heuristic": 0.020557653069026627
+  }
+}
