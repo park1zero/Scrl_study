@@ -64,8 +64,8 @@
     "min_lambda_std": 0.18993419913222578,
     "peak_driver_rwa_mean": 0.2834537519639068,
     "peak_driver_rwa_std": 0.057071722545889256,
-    "peak_driver_swa_cmd_mean": 5.141241670352758,
-    "peak_driver_swa_cmd_std": 1.1660315755609547,
+    "peak_driver_sfa_cmd_mean": 5.141241670352758,
+    "peak_driver_sfa_cmd_std": 1.1660315755609547,
     "return_mean": 4.712336430538132,
     "return_std": 8.495555028285905,
     "rms_conflict_mean": 0.16956221942314914,
@@ -92,7 +92,7 @@
       "first_driver_reaction_time": NaN,
       "first_motor_release_time": NaN,
       "peak_driver_rwa": 0.0019345999591600807,
-      "peak_driver_swa_cmd": 0.12815350568711378,
+      "peak_driver_sfa_cmd": 0.12815350568711378,
       "collision": 1.0,
       "success": 0.0,
       "return": -209.5429393087873
@@ -111,7 +111,7 @@
       "first_driver_reaction_time": 1.6000000000000008,
       "first_motor_release_time": 1.5500000000000007,
       "peak_driver_rwa": 0.02138226661845843,
-      "peak_driver_swa_cmd": 0.5348855338300009,
+      "peak_driver_sfa_cmd": 0.5348855338300009,
       "collision": 0.0,
       "success": 1.0,
       "return": 17.85535083436684
@@ -130,7 +130,7 @@
       "first_driver_reaction_time": 1.6000000000000008,
       "first_motor_release_time": 1.5500000000000007,
       "peak_driver_rwa": 0.0212234687300986,
-      "peak_driver_swa_cmd": 0.539301466883751,
+      "peak_driver_sfa_cmd": 0.539301466883751,
       "collision": 0.0,
       "success": 1.0,
       "return": 18.088403526692844
@@ -149,7 +149,7 @@
       "first_driver_reaction_time": NaN,
       "first_motor_release_time": NaN,
       "peak_driver_rwa": 0.0037713354152600336,
-      "peak_driver_swa_cmd": 0.21166959136665728,
+      "peak_driver_sfa_cmd": 0.21166959136665728,
       "collision": 1.0,
       "success": 0.0,
       "return": -210.00877212494098

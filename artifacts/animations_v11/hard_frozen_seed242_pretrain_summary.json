@@ -13,7 +13,7 @@
     "first_driver_reaction_time": 1.3000000000000005,
     "first_motor_release_time": 1.2500000000000004,
     "peak_driver_rwa": 0.04518714317783338,
-    "peak_driver_swa_cmd": 0.896819037612914,
+    "peak_driver_sfa_cmd": 0.896819037612914,
     "collision": 0.0,
     "success": 1.0,
     "return": 2.2849364512772325

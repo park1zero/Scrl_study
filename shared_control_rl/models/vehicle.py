@@ -17,7 +17,7 @@ class VehicleState:
     vy: float = 0.0
     r: float = 0.0
     delta_rwa: float = 0.0
-    delta_swa: float = 0.0
+    delta_sfa: float = 0.0
     lam: float = 1.0
     t: float = 0.0
 
@@ -44,7 +44,7 @@ def _apply_first_order_rate_limited(
 def step_vehicle(
     state: VehicleState,
     rwa_cmd: float,
-    swa_cmd: float,
+    sfa_cmd: float,
     params: VehicleParams,
 ) -> VehicleState:
     """One Euler step of constant-speed bicycle dynamics with separate SBW states."""
@@ -60,14 +60,14 @@ def step_vehicle(
         lower=-params.max_rwa,
         upper=params.max_rwa,
     )
-    next_swa = _apply_first_order_rate_limited(
-        current=state.delta_swa,
-        target=swa_cmd,
-        tau=params.tau_swa,
-        rate_limit=params.max_swa_rate,
+    next_sfa = _apply_first_order_rate_limited(
+        current=state.delta_sfa,
+        target=sfa_cmd,
+        tau=params.tau_sfa,
+        rate_limit=params.max_sfa_rate,
         dt=dt,
-        lower=-params.max_swa,
-        upper=params.max_swa,
+        lower=-params.max_sfa,
+        upper=params.max_sfa,
     )
 
     alpha_f = (state.vy + params.lf * state.r) / vx - next_rwa
@@ -90,14 +90,14 @@ def step_vehicle(
         vy=state.vy + dt * vy_dot,
         r=state.r + dt * r_dot,
         delta_rwa=next_rwa,
-        delta_swa=next_swa,
+        delta_sfa=next_sfa,
         lam=state.lam,
         t=state.t + dt,
     )
 
 
-def equivalent_rwa_from_swa(delta_swa: float, params: VehicleParams) -> float:
-    return float(np.clip(delta_swa / params.steering_ratio, -params.max_rwa, params.max_rwa))
+def equivalent_rwa_from_sfa(delta_sfa: float, params: VehicleParams) -> float:
+    return float(np.clip(delta_sfa / params.steering_ratio, -params.max_rwa, params.max_rwa))
 
 
 def blend_rwa_command(lam: float, delta_drv_rwa: float, delta_auto_rwa: float) -> float:

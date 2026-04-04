@@ -42,7 +42,7 @@ On the included 12-cell grid, **v11 conservative SAC** matches the heuristic's s
 
 This package implements a lightweight indirect shared-control testbed for steering assistance with:
 
-- constant-speed dynamic bicycle + separate SBW `delta_swa` / `delta_rwa`
+- constant-speed dynamic bicycle + separate SBW `delta_sfa` / `delta_rwa`
 - split-delay drowsy-driver model
 - driver population randomization
   - `late_linear`

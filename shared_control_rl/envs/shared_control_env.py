@@ -42,7 +42,7 @@ from shared_control_rl.models.driver import DrowsyDriverModel
 from shared_control_rl.models.vehicle import (
     VehicleState,
     blend_rwa_command,
-    equivalent_rwa_from_swa,
+    equivalent_rwa_from_sfa,
     step_vehicle,
 )
 from shared_control_rl.utils.curriculum import apply_difficulty, apply_late_start, sample_episode
@@ -81,7 +81,7 @@ class SharedControlEnv(gym.Env):
         self.mpc: ShootingBarrierMPC
         self.safety_filter: LambdaSafetyFilter
 
-        self.current_driver_swa_cmd: float = 0.0
+        self.current_driver_sfa_cmd: float = 0.0
         self.current_driver_rwa: float = 0.0
         self.current_auto_rwa: float = 0.0
         self.current_cmd_rwa: float = 0.0
@@ -142,7 +142,7 @@ class SharedControlEnv(gym.Env):
             self.scenario_cfg.obstacle_x = float(self.rng.uniform(*self.scenario_cfg.obstacle_x_range))
             self.scenario_cfg.obstacle_b = float(self.rng.uniform(*self.scenario_cfg.obstacle_b_range))
             self.vehicle_params.vx = float(self.rng.uniform(*self.scenario_cfg.speed_range))
-            self.scenario_cfg.y0 = float(self.rng.uniform(*self.scenario_cfg.sway_range))
+            self.scenario_cfg.y0 = float(self.rng.uniform(*self.scenario_cfg.sfay_range))
             self.scenario_cfg.psi0 = float(self.rng.uniform(*self.scenario_cfg.psi0_range))
             if self.current_late_start:
                 dist = float(self.rng.uniform(*self.scenario_cfg.late_start_distance_range))
@@ -152,7 +152,7 @@ class SharedControlEnv(gym.Env):
             self.vehicle_params.cf *= float(self.rng.uniform(*self.scenario_cfg.cf_scale_range))
             self.vehicle_params.cr *= float(self.rng.uniform(*self.scenario_cfg.cr_scale_range))
             self.vehicle_params.tau_rwa *= float(self.rng.uniform(*self.scenario_cfg.tau_rwa_scale_range))
-            self.vehicle_params.tau_swa *= float(self.rng.uniform(*self.scenario_cfg.tau_swa_scale_range))
+            self.vehicle_params.tau_sfa *= float(self.rng.uniform(*self.scenario_cfg.tau_sfa_scale_range))
             self.vehicle_params.steering_ratio *= float(self.rng.uniform(*self.scenario_cfg.steering_ratio_scale_range))
 
         if use_population:
@@ -191,7 +191,7 @@ class SharedControlEnv(gym.Env):
             vy=0.0,
             r=0.0,
             delta_rwa=0.0,
-            delta_swa=0.0,
+            delta_sfa=0.0,
             lam=1.0,
             t=0.0,
         )
@@ -213,7 +213,7 @@ class SharedControlEnv(gym.Env):
                 np.clip(self.state.vy / 5.0, -5.0, 5.0),
                 np.clip(self.state.r / 1.5, -5.0, 5.0),
                 np.clip(self.state.delta_rwa / max(self.vehicle_params.max_rwa, 1e-6), -5.0, 5.0),
-                np.clip(self.state.delta_swa / max(self.vehicle_params.max_swa, 1e-6), -5.0, 5.0),
+                np.clip(self.state.delta_sfa / max(self.vehicle_params.max_sfa, 1e-6), -5.0, 5.0),
                 np.clip(self.current_driver_rwa / max(self.vehicle_params.max_rwa, 1e-6), -5.0, 5.0),
                 np.clip(self.current_auto_rwa / max(self.vehicle_params.max_rwa, 1e-6), -5.0, 5.0),
                 np.clip(self.state.lam, 0.0, 1.0),
@@ -239,12 +239,12 @@ class SharedControlEnv(gym.Env):
             "psi": float(self.state.psi),
             "vy": float(self.state.vy),
             "r": float(self.state.r),
-            "delta_swa": float(self.state.delta_swa),
+            "delta_sfa": float(self.state.delta_sfa),
             "delta_rwa": float(self.state.delta_rwa),
-            "driver_swa_cmd": float(self.current_driver_swa_cmd),
-            "driver_raw_swa_cmd": float(self.driver.raw_cmd),
-            "driver_filtered_swa_cmd": float(self.driver.filtered_cmd),
-            "driver_output_swa_cmd": float(self.driver.output_cmd),
+            "driver_sfa_cmd": float(self.current_driver_sfa_cmd),
+            "driver_raw_sfa_cmd": float(self.driver.raw_cmd),
+            "driver_filtered_sfa_cmd": float(self.driver.filtered_cmd),
+            "driver_output_sfa_cmd": float(self.driver.output_cmd),
             "driver_perceived_h": float(self.driver.perceived_h),
             "driver_perceived_dx": float(self.driver.perceived_dx),
             "driver_hazard_active": float(self.driver.hazard_active),
@@ -321,7 +321,7 @@ class SharedControlEnv(gym.Env):
                 "x": [],
                 "y": [],
                 "psi": [],
-                "delta_swa": [],
+                "delta_sfa": [],
                 "delta_rwa": [],
                 "delta_drv_rwa": [],
                 "delta_auto_rwa": [],
@@ -332,9 +332,9 @@ class SharedControlEnv(gym.Env):
                 "reward": [],
                 "driver_perceived_h": [],
                 "driver_perceived_dx": [],
-                "driver_raw_swa_cmd": [],
-                "driver_filtered_swa_cmd": [],
-                "driver_output_swa_cmd": [],
+                "driver_raw_sfa_cmd": [],
+                "driver_filtered_sfa_cmd": [],
+                "driver_output_sfa_cmd": [],
                 "driver_hazard_active": [],
             }
 
@@ -342,7 +342,7 @@ class SharedControlEnv(gym.Env):
         self.history["x"].append(self.state.x)
         self.history["y"].append(self.state.y)
         self.history["psi"].append(self.state.psi)
-        self.history["delta_swa"].append(self.state.delta_swa)
+        self.history["delta_sfa"].append(self.state.delta_sfa)
         self.history["delta_rwa"].append(self.state.delta_rwa)
         self.history["delta_drv_rwa"].append(info["delta_drv_rwa"])
         self.history["delta_auto_rwa"].append(info["delta_auto_rwa"])
@@ -353,9 +353,9 @@ class SharedControlEnv(gym.Env):
         self.history["reward"].append(reward)
         self.history["driver_perceived_h"].append(info["driver_perceived_h"])
         self.history["driver_perceived_dx"].append(info["driver_perceived_dx"])
-        self.history["driver_raw_swa_cmd"].append(info["driver_raw_swa_cmd"])
-        self.history["driver_filtered_swa_cmd"].append(info["driver_filtered_swa_cmd"])
-        self.history["driver_output_swa_cmd"].append(info["driver_output_swa_cmd"])
+        self.history["driver_raw_sfa_cmd"].append(info["driver_raw_sfa_cmd"])
+        self.history["driver_filtered_sfa_cmd"].append(info["driver_filtered_sfa_cmd"])
+        self.history["driver_output_sfa_cmd"].append(info["driver_output_sfa_cmd"])
         self.history["driver_hazard_active"].append(info["driver_hazard_active"])
 
     def reset(
@@ -378,7 +378,7 @@ class SharedControlEnv(gym.Env):
             preferred_side=self.scenario_cfg.avoid_side,
         )
 
-        self.current_driver_swa_cmd = 0.0
+        self.current_driver_sfa_cmd = 0.0
         self.current_driver_rwa = 0.0
         self.current_auto_rwa = 0.0
         self.current_cmd_rwa = 0.0
@@ -395,14 +395,14 @@ class SharedControlEnv(gym.Env):
         action_scalar = float(np.clip(np.asarray(action).reshape(-1)[0], -1.0, 1.0))
         dt = self.vehicle_params.dt
 
-        driver_swa_cmd = self.driver.compute_command(
+        driver_sfa_cmd = self.driver.compute_command(
             state=self.state,
             ref_y=0.0,
             ref_psi=0.0,
             obstacle=self.obstacle,
             margin=self.scenario_cfg.obstacle_margin,
         )
-        delta_drv_rwa = equivalent_rwa_from_swa(self.state.delta_swa, self.vehicle_params)
+        delta_drv_rwa = equivalent_rwa_from_sfa(self.state.delta_sfa, self.vehicle_params)
         delta_auto_rwa = self.mpc.compute_command(
             state=self.state,
             obstacle=self.obstacle,
@@ -431,7 +431,7 @@ class SharedControlEnv(gym.Env):
         next_state = step_vehicle(
             state=self.state,
             rwa_cmd=delta_cmd,
-            swa_cmd=driver_swa_cmd,
+            sfa_cmd=driver_sfa_cmd,
             params=self.vehicle_params,
         )
         next_state.lam = lambda_safe
@@ -448,7 +448,7 @@ class SharedControlEnv(gym.Env):
         truncated = self.step_count >= self.base_config.max_steps()
         terminated = collision or success
 
-        self.current_driver_swa_cmd = driver_swa_cmd
+        self.current_driver_sfa_cmd = driver_sfa_cmd
         self.current_driver_rwa = delta_drv_rwa
         self.current_auto_rwa = delta_auto_rwa
         self.current_cmd_rwa = delta_cmd

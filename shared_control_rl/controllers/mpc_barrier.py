@@ -45,7 +45,7 @@ class ShootingBarrierMPC:
             sim_state = step_vehicle(
                 sim_state,
                 rwa_cmd=u,
-                swa_cmd=sim_state.delta_swa,
+                sfa_cmd=sim_state.delta_sfa,
                 params=self.params,
             )
 

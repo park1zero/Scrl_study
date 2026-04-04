@@ -48,7 +48,7 @@ class LambdaSafetyFilter:
             next_state = step_vehicle(
                 state=state,
                 rwa_cmd=delta_cmd,
-                swa_cmd=state.delta_swa,
+                sfa_cmd=state.delta_sfa,
                 params=self.params,
             )
             h_next = ellipse_barrier(next_state.x, next_state.y, inflated)

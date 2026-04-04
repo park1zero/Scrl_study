@@ -15,7 +15,7 @@ class DrowsyDriverModel:
     """Drowsy driver with split perception delay, motor delay, and bursty reaction.
 
     Output is a *steering wheel angle* command in radians at the steering-wheel side.
-    The state.delta_swa actuator in the plant adds one more physical lag on top of the
+    The state.delta_sfa actuator in the plant adds one more physical lag on top of the
     driver's own perception and motor delays.
 
     v8 change
@@ -163,9 +163,9 @@ class DrowsyDriverModel:
         raw_cmd = self.cfg.ky * e_y + self.cfg.kpsi * e_psi + obstacle_term
         alpha = self.params.dt / max(self.cfg.lpf_tau, self.params.dt)
         self.filtered_cmd = (1.0 - alpha) * self.filtered_cmd + alpha * raw_cmd
-        self.filtered_cmd = float(np.clip(self.filtered_cmd, -self.cfg.max_swa_cmd, self.cfg.max_swa_cmd))
+        self.filtered_cmd = float(np.clip(self.filtered_cmd, -self.cfg.max_sfa_cmd, self.cfg.max_sfa_cmd))
 
         self.motor_buffer.append(self.filtered_cmd)
-        self.output_cmd = float(np.clip(self.motor_buffer[0], -self.cfg.max_swa_cmd, self.cfg.max_swa_cmd))
-        self.raw_cmd = float(np.clip(raw_cmd, -self.cfg.max_swa_cmd, self.cfg.max_swa_cmd))
+        self.output_cmd = float(np.clip(self.motor_buffer[0], -self.cfg.max_sfa_cmd, self.cfg.max_sfa_cmd))
+        self.raw_cmd = float(np.clip(raw_cmd, -self.cfg.max_sfa_cmd, self.cfg.max_sfa_cmd))
         return self.output_cmd

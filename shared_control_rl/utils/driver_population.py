@@ -95,5 +95,5 @@ def sample_driver_config(
         cfg.ky = float(rng.uniform(-0.10, -0.05))
         cfg.kpsi = float(rng.uniform(-0.85, -0.55))
 
-    cfg.max_swa_cmd = float(rng.uniform(5.0, 6.5))
+    cfg.max_sfa_cmd = float(rng.uniform(5.0, 6.5))
     return cfg

@@ -18,13 +18,13 @@ class VehicleParams:
     vx: float = 20.0
 
     tau_rwa: float = 0.12
-    tau_swa: float = 0.10
+    tau_sfa: float = 0.10
 
     max_rwa: float = 0.35          # rad
     max_rwa_rate: float = 0.70     # rad/s
-    max_swa: float = 7.5           # rad at steering wheel
-    max_swa_rate: float = 8.0      # rad/s at steering wheel
-    steering_ratio: float = 16.0   # SWA / RWA
+    max_sfa: float = 7.5           # rad at steering wheel
+    max_sfa_rate: float = 8.0      # rad/s at steering wheel
+    steering_ratio: float = 16.0   # sfa / RWA
 
     @property
     def wheelbase(self) -> float:
@@ -53,14 +53,14 @@ class ScenarioConfig:
     cf_scale_range: Tuple[float, float] = (0.85, 1.15)
     cr_scale_range: Tuple[float, float] = (0.85, 1.15)
     tau_rwa_scale_range: Tuple[float, float] = (0.85, 1.20)
-    tau_swa_scale_range: Tuple[float, float] = (0.85, 1.20)
+    tau_sfa_scale_range: Tuple[float, float] = (0.85, 1.20)
     steering_ratio_scale_range: Tuple[float, float] = (0.92, 1.08)
     # Split delay ranges for the drowsy-driver model.
     perception_delay_range: Tuple[float, float] = (0.25, 0.50)
     motor_delay_range: Tuple[float, float] = (0.12, 0.28)
     # Backward-compatible total delay range, retained for older scripts / notes.
     delay_range: Tuple[float, float] = (0.45, 0.85)
-    sway_range: Tuple[float, float] = (-0.2, 0.2)
+    sfay_range: Tuple[float, float] = (-0.2, 0.2)
     psi0_range: Tuple[float, float] = (-0.03, 0.03)
     late_start_distance_range: Tuple[float, float] = (10.0, 20.0)
     side_randomization: bool = False
@@ -93,7 +93,7 @@ class DrowsyDriverConfig:
     burst_duration_seconds: float = 0.30
     detection_range: float = 30.0
     preferred_side: float = 1.0
-    max_swa_cmd: float = 6.0
+    max_sfa_cmd: float = 6.0
     wrong_way_duration_seconds: float = 0.0
     wrong_way_gain: float = 1.0
 

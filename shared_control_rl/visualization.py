@@ -79,7 +79,7 @@ def animate_history(
     h = np.asarray(history["h"], dtype=float)
     reward = np.asarray(history["reward"], dtype=float)
     driver_perceived_h = np.asarray(history.get("driver_perceived_h", np.full_like(t, np.nan)), dtype=float)
-    driver_motor_cmd = np.asarray(history.get("driver_output_swa_cmd", np.full_like(t, np.nan)), dtype=float)
+    driver_motor_cmd = np.asarray(history.get("driver_output_sfa_cmd", np.full_like(t, np.nan)), dtype=float)
     driver_hazard = np.asarray(history.get("driver_hazard_active", np.zeros_like(t)), dtype=float)
 
     if len(t) == 0:
@@ -227,7 +227,7 @@ def animate_history(
                     f"x = {x[j]:.1f} m, y = {y[j]:.2f} m",
                     f"lambda = {lam[j]:.2f}",
                     f"h = {h[j]:.3f}, drv_h = {driver_perceived_h[j]:.2f}",
-                    f"drv_out = {driver_motor_cmd[j]:.2f} rad SWA",
+                    f"drv_out = {driver_motor_cmd[j]:.2f} rad sfa",
                     f"burst = {'on' if driver_hazard[j] > 0.5 else 'off'}",
                     f"status = {status}",
                 ]

@@ -37,7 +37,7 @@ def summarize_history(history: Dict[str, list[float]], info: Dict[str, Any] | No
             "first_driver_reaction_time": np.nan,
             "first_motor_release_time": np.nan,
             "peak_driver_rwa": np.nan,
-            "peak_driver_swa_cmd": np.nan,
+            "peak_driver_sfa_cmd": np.nan,
             "collision": np.nan,
             "success": np.nan,
             "return": np.nan,
@@ -51,7 +51,7 @@ def summarize_history(history: Dict[str, list[float]], info: Dict[str, Any] | No
     delta_drv = np.asarray(history.get("delta_drv_rwa", []), dtype=float)
     reward = np.asarray(history.get("reward", []), dtype=float)
     t = np.asarray(history.get("t", []), dtype=float)
-    driver_out = np.asarray(history.get("driver_output_swa_cmd", []), dtype=float)
+    driver_out = np.asarray(history.get("driver_output_sfa_cmd", []), dtype=float)
 
     conflict = delta_cmd - delta_drv if len(delta_cmd) == len(delta_drv) and len(delta_cmd) > 0 else np.array([np.nan])
 
@@ -72,7 +72,7 @@ def summarize_history(history: Dict[str, list[float]], info: Dict[str, Any] | No
         "first_driver_reaction_time": _first_threshold_time(delta_drv, t, threshold=0.01),
         "first_motor_release_time": _first_threshold_time(driver_out, t, threshold=0.25),
         "peak_driver_rwa": float(np.max(np.abs(delta_drv))) if len(delta_drv) else np.nan,
-        "peak_driver_swa_cmd": float(np.max(np.abs(driver_out))) if len(driver_out) else np.nan,
+        "peak_driver_sfa_cmd": float(np.max(np.abs(driver_out))) if len(driver_out) else np.nan,
         "collision": collision,
         "success": success,
         "return": float(np.sum(reward)) if len(reward) else np.nan,
