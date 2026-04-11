@@ -59,12 +59,13 @@ class JBKDriverParams:
 
     # Hazard burst layer
     preferred_side: float = 1.0
-    detection_range: float = 30.0
-    hazard_onset: float = 0.35
+    detection_range: float = 34.0
+    hazard_onset: float = 0.25
     obstacle_gain: float = 2.00
     burst_gain: float = 2.20
     burst_trigger_h: float = 8.0
     desired_clearance: float = 1.8
+    preview_hazard_gain: float = 0.85
     side_deadzone: float = 0.05
     dx_softening: float = 8.0
     dy_softening: float = 0.85
@@ -140,9 +141,41 @@ def step_jbk_driver(driver_state: JBKDriverState, vehicle_state, obstacle: Obsta
     perceived = driver_state.perception_buffer[0]
 
     # ------------------------------------------------------------------
-    # 1) JBK-style nominal preview steering core
+    # 1) Hazard reference and burst terms
     # ------------------------------------------------------------------
-    y_ref_core = params.lane_center_y
+    dx = obstacle.x - perceived['x']
+    dy = perceived['y'] - obstacle.y
+    perceived_h = barrier_h(perceived['x'], perceived['y'], obstacle)
+
+    hazard = 0.0
+    hazard_gate = 0.0
+    hazard_cmd = 0.0
+    burst_mult = 1.0
+    y_ref_hazard = 0.0
+    y_ref_preview = 0.0
+    side = params.preferred_side
+    preview_side = params.preferred_side
+
+    if 0.0 <= dx <= params.detection_range:
+        hazard = 1.0 - dx / max(params.detection_range, 1e-6)
+        hazard_gate = clamp((hazard - params.hazard_onset) / max(1.0 - params.hazard_onset, 1e-6), 0.0, 1.0)
+        side = signed_side(perceived['y'], obstacle, deadzone=params.side_deadzone, preferred=params.preferred_side)
+        proximity = (params.detection_range - dx) / max(params.dx_softening + dx, 1e-6)
+        lateral_amp = 1.0 / (abs(dy) + params.dy_softening)
+        y_ref_preview = preview_side * params.desired_clearance * hazard
+        y_ref_hazard = side * params.desired_clearance * hazard_gate
+        hazard_cmd = side * params.obstacle_gain * hazard_gate * hazard * proximity * lateral_amp
+        if perceived_h <= params.burst_trigger_h:
+            burst_mult = params.burst_gain
+            hazard_cmd *= burst_mult
+
+    # ------------------------------------------------------------------
+    # 2) JBK-style nominal preview steering core
+    # ------------------------------------------------------------------
+    # During obstacle approach, bias the preview path toward the chosen pass side.
+    # This reduces the lane-centering vs. obstacle-avoidance conflict from the
+    # original late-burst-only implementation.
+    y_ref_core = params.lane_center_y + params.preview_hazard_gain * y_ref_preview
     alpha1, alpha2, beta = _compute_preview_angles(perceived, params, vx=vx, y_ref=y_ref_core)
     alpha1_dot = (alpha1 - driver_state.prev_alpha1) / max(dt, 1e-6)
     driver_state.prev_alpha1 = alpha1
@@ -156,31 +189,6 @@ def step_jbk_driver(driver_state: JBKDriverState, vehicle_state, obstacle: Obsta
     attention = params.attention_scale * _attention_gate(perceived['t'], params)
     core_cmd = attention * (compensation + prediction)
     driver_state.last_core_cmd = core_cmd
-
-    # ------------------------------------------------------------------
-    # 2) Late hazard burst overlay
-    # ------------------------------------------------------------------
-    dx = obstacle.x - perceived['x']
-    dy = perceived['y'] - obstacle.y
-    perceived_h = barrier_h(perceived['x'], perceived['y'], obstacle)
-
-    hazard = 0.0
-    hazard_gate = 0.0
-    hazard_cmd = 0.0
-    burst_mult = 1.0
-    y_ref_hazard = 0.0
-
-    if 0.0 <= dx <= params.detection_range:
-        hazard = 1.0 - dx / max(params.detection_range, 1e-6)
-        hazard_gate = clamp((hazard - params.hazard_onset) / max(1.0 - params.hazard_onset, 1e-6), 0.0, 1.0)
-        side = signed_side(perceived['y'], obstacle, deadzone=params.side_deadzone, preferred=params.preferred_side)
-        proximity = (params.detection_range - dx) / max(params.dx_softening + dx, 1e-6)
-        lateral_amp = 1.0 / (abs(dy) + params.dy_softening)
-        y_ref_hazard = side * params.desired_clearance * hazard_gate
-        hazard_cmd = side * params.obstacle_gain * hazard_gate * hazard * proximity * lateral_amp
-        if perceived_h <= params.burst_trigger_h:
-            burst_mult = params.burst_gain
-            hazard_cmd *= burst_mult
 
     driver_state.last_hazard_cmd = hazard_cmd
     raw_cmd = core_cmd + hazard_cmd
@@ -207,9 +215,13 @@ def step_jbk_driver(driver_state: JBKDriverState, vehicle_state, obstacle: Obsta
         'dx': dx,
         'dy': dy,
         'perceived_h': perceived_h,
+        'side': side,
+        'preview_side': preview_side,
         'beta': beta,
         'alpha1': alpha1,
         'alpha2': alpha2,
+        'y_ref_core': y_ref_core,
+        'y_ref_preview': y_ref_preview,
         'compensation': compensation,
         'prediction': prediction,
         'attention': attention,

@@ -52,6 +52,7 @@ class EnvParams:
     obstacle_b_jitter: float = 0.20
     speed_jitter: float = 1.5
     randomize_pass_side: bool = False
+    randomize_driver: bool = False
 
 
 class SharedControlEnv:
@@ -104,6 +105,11 @@ class SharedControlEnv:
                 if hasattr(self.driver_params, 'preferred_side'):
                     self.driver_params.preferred_side = sign
                 self.automation_params.pass_side = sign
+            if self.env_params.randomize_driver and self.driver_model == 'jbk':
+                self.driver_params.perception_delay_s = max(0.12, self.driver_params.perception_delay_s + self.rng.uniform(-0.05, 0.08))
+                self.driver_params.motor_delay_s = max(0.06, self.driver_params.motor_delay_s + self.rng.uniform(-0.03, 0.05))
+                self.driver_params.attention_scale = clip(self.driver_params.attention_scale + self.rng.uniform(-0.08, 0.08), 0.45, 0.75)
+                self.driver_params.obstacle_gain = max(1.2, self.driver_params.obstacle_gain + self.rng.uniform(-0.35, 0.45))
 
         self.state = VehicleState(x=0.0, y=y0, psi=0.0, vy=0.0, r=0.0, delta_rwa=0.0, delta_swa=0.0, lam=self.env_params.initial_lambda, t=0.0)
         self.driver_state = initialize_driver_state(self.driver_model, self.driver_params, self.vehicle_params.dt)
